@@ -22,6 +22,7 @@ const BlogPost = ({ post }) => {
   };
 
   const handleCancel = () => {
+    setIsEditing(false);
   };
 
   const handleDelete = () => {
