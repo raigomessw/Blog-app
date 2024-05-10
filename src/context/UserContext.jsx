@@ -1,16 +1,30 @@
-import { createContext, useState } from "react";
+import { createContext, useState } from 'react';
 
-// Skapa en ny kontext
 export const UserContext = createContext();
 
-// Skapa en komponent som innehåller state du vill dela
-export const UserProvider = (props) => {
-  const [userName, setUserName] = useState("John Doe");
+export const UserProvider = ({ children }) => {
+  const [user, setUser] = useState({ name: 'Rai Gomes' });
   const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [blogPosts, setBlogPosts] = useState([
+    {
+      id: 1,
+      title: 'Post 1',
+      author: 'Jane Doe',
+      text: 'This is post 1',
+      comments: [],
+    },
+    {
+      id: 2,
+      title: 'Post 2',
+      author: 'Jane Doe',
+      text: 'This is post 2',
+      comments: [],
+    },
+  ]);
 
   return (
-    <UserContext.Provider value={{ userName, setUserName, isLoggedIn }}>
-      {props.children}
+    <UserContext.Provider value={{ user, isLoggedIn, blogPosts, setBlogPosts, setUser }}>
+      {children}
     </UserContext.Provider>
   );
 };

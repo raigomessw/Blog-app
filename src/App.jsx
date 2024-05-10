@@ -1,32 +1,31 @@
-import { useState } from 'react'
-import NavBar from './component/NavBar'
-import Home from './page/Home'
-import './App.css'
-import PageLayout from "./component/PageLayout";
+import React from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { BlogProvider } from "./context/BlogContext";
+import { UserProvider } from "./context/UserContext.jsx";
 import { useContext } from "react";
 import { UserContext } from "./context/UserContext";
+import NavBar from './component/NavBar';
+import HomePage from './page/HomePage';
+import NewPostPage from './page/NewPostPage';
 
-function App() {
+const App = () => {
   const { isLoggedIn } = useContext(UserContext);
-
   return (
-    <BlogProvider>
-      <BrowserRouter>
+    <UserProvider>
+    <BrowserRouter>
         <NavBar />
         {isLoggedIn ? (
           <>
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<HomePage />} />
+              <Route path="/new-post-page" element={<NewPostPage />} />
             </Routes>
           </>
         ) : (
           <PageLayout>Please log in</PageLayout>
         )}
       </BrowserRouter>
-    </BlogProvider>
-  )
-}
+    </UserProvider>
+  );
+};
 
-export default App
+export default App;
