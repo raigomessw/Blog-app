@@ -31,7 +31,7 @@ const BlogPost = ({ post }) => {
 
   return (
     <div>
-      <h2>{isEditing ? <input value={title} onChange={(e) => setTitle(e.target.value)} /> : post.title}</h2>
+<h2>{isEditing ? <input value={title} onChange={setTitle} /> : post.title}</h2>
       <p>Author: {post.author}</p>
       {isEditing ? (
         <textarea value={text} onChange={(e) => setText(e.target.value)} />

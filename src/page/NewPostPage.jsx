@@ -4,7 +4,7 @@ import NewPost from "../component/NewPost"
 const NewPostPage = () => {
  return ( 
     <div>
-     <NewPost />
+       <NewPost />
     </div>
   );
 }
