@@ -4,7 +4,7 @@ import { useContext } from 'react';
 import { UserContext } from '../context/UserContext';
 
 const BlogPost = ({ post }) => {
-  const { user, blogPosts, setBlogPosts } = useContext(UserContext);
+  const { userName, blogPosts, setBlogPosts } = useContext(UserContext);
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(post.title);
   const [text, setText] = useState(post.text);
@@ -41,7 +41,7 @@ const BlogPost = ({ post }) => {
       {post.comments.map((comment) => (
         <Comment key={comment.id} comment={comment} />
       ))}
-      {user.name === post.author && (
+      {userName === post.author && (
         <div>
           {isEditing ? (
             <div>

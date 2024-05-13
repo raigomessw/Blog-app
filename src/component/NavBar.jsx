@@ -1,34 +1,36 @@
-import { Link } from 'react-router-dom';
-import { useContext } from 'react';
-import { UserContext } from '../context/UserContext';
+import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
+import NewPostPage from '../page/NewPostPage';
 
-const NavBar = () => {
-  const { user, isLoggedIn } = useContext(UserContext);
+const Header = () => {
+  const { userName, isLoggedIn, login, logout } = useContext(UserContext);
 
   return (
-    <div className="grid grid-cols-2 mx-4 my-2 lg:mx-14 lg:my-6 items-center">
+    <div className="grid grid-cols-2 mt-6 mx-10 items-center">
       <h1 className="font-bold">Blog App</h1>
 
-      <nav className=" flex">
-        <Link to="/" exact className="mr-4" key="home">
+      <nav className="flex justify-end">
+        <Link to="/" className="mr-4">
           Home
         </Link>
-        <Link to="/new-post-page" className="mr-4" key="new-post-page">
-          New Post
+        <Link className="mr-4" to="/new-post-page">
+          NewPostPage
         </Link>
 
         {isLoggedIn ? (
-          <Link to="/logout" className="mr-4" key="logout">
-            Logout
-          </Link>
+          <>
+            <p className="mx-5 font-bold">{userName}</p>
+            <button onClick={logout}>Log out</button>
+          </>
         ) : (
-          <Link to="/login" className="mr-4" key="login">
-            Login
-          </Link>
+          <button className="ml-5" onClick={login}>
+            Log in
+          </button>
         )}
       </nav>
     </div>
   );
 };
 
-export default NavBar;
+export default Header;

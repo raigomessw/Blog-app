@@ -1,26 +1,32 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { UserProvider } from './context/UserContext';
-import NavBar from './component/NavBar';
-import HomePage from './page/HomePage';
+import NavBar from "./component/NavBar";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "./context/UserContext";
+import PageLayout from "./component/PageLayout";
+import { ProductProvider } from "./context/ProductContext";
+import HomePage from './component/Home';
 import NewPostPage from './page/NewPostPage';
-import Login from './component/Login';
-import PageLayout from './component/PageLayout';
 
 const App = () => {
+  const { isLoggedIn } = useContext(UserContext);
+
   return (
-    <UserProvider>
+    <ProductProvider>
       <BrowserRouter>
         <NavBar />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/new-post-page" element={<NewPostPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/logout" element={<PageLayout>You have been logged out.</PageLayout>} />
-          <Route path="*" element={<PageLayout>Page not found.</PageLayout>} />
-        </Routes>
+        {isLoggedIn ? (
+          <>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/about" element={<NewPostPage />} />
+              
+            </Routes>
+          </>
+        ) : (
+          <PageLayout>Please log in</PageLayout>
+        )}
       </BrowserRouter>
-    </UserProvider>
+    </ProductProvider>
   );
 };
 
