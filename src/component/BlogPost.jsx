@@ -1,27 +1,52 @@
-import React, { useContext } from 'react';
-import CommentForm from './CommentForm';
-import Comment from './Comment';
-import { UserContext } from '../context/UserContext';
+import React, { useContext, useState, useEffect } from 'react';
+import { BlogContext } from '../context/BlogContext';
 
-const BlogPost = ({ post, addComment }) => {
-  const { userName, isLoggedIn } = useContext(UserContext);
+const BlogPost = (props) => {
+  const { post, addComment } = useContext(BlogContext);
 
-  const handleAddComment = (newComment) => {
-    addComment(post.id, newComment);
+  const [newComment, setNewComment] = useState('');
+  const [currentPost, setCurrentPost] = useState(props.post);
+
+  useEffect(() => {
+    setCurrentPost(props.post);
+  }, [props.post]);
+  console.log("Current:",currentPost);
+
+  const handleAddComment = () => {
+    if (newComment.trim()) {
+      const newCommentObj = {
+        id: new Date().getTime(),
+        text: newComment,
+        author: 'Anonymous',
+      };
+
+      addComment(currentPost.id, newCommentObj);
+      setNewComment('');
+    }
   };
 
+  if (!currentPost) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <div className=" shadow-md p-4 rounded">
-      <h2 className="text-2xl font-bold mb-2">{post.title}</h2>
-      <p className="text-gray-700 mb-4">{post.text}</p>
-      <p className="text-gray-600 mb-2">Author: {post.author}</p>
-      {isLoggedIn && (
-        <CommentForm onAddComment={handleAddComment} />
-      )}
-      <h3 className="text-xl font-bold mb-2 mt-6">Comments</h3>
-      {post.comments && post.comments.map((comment) => (
-        <Comment key={comment.id} comment={comment} />
-      ))}
+    <div>
+      <h2>{currentPost.title}</h2>
+      <p>{currentPost.text}</p>
+      <p>Author: {currentPost.author}</p>
+      <ul>
+        {currentPost.comments.map((comment) => (
+          <li key={comment.id}>
+            {comment.text} - {comment.author}
+          </li>
+        ))}
+      </ul>
+      <input
+        value={newComment}
+        onChange={(e) => setNewComment(e.target.value)}
+        placeholder="Add a comment"
+      />
+      <button onClick={handleAddComment}>Add Comment</button>
     </div>
   );
 };

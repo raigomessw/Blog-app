@@ -3,12 +3,13 @@ import { useContext } from 'react';
 import { UserContext } from '../context/UserContext';
 import { BlogContext } from '../context/BlogContext';
 
-const BlogAddPost = () => {
+const BlogAddPost = ({ addComment }) => {
   const { userName } = useContext(UserContext);
-  const { blogPost, setBlogPosts } = useContext(BlogContext);
+  const { blogPosts, addPost } = useContext(BlogContext);
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
+  const [newComment, setNewComment] = useState('');
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -23,7 +24,9 @@ const BlogAddPost = () => {
       comments: [],
     };
 
-    setBlogPosts((prevPosts) => [...prevPosts, newPost]);
+    console.log(newPost);
+
+    addPost(newPost);
     setIsEditing(false);
   };
 
@@ -31,13 +34,35 @@ const BlogAddPost = () => {
     setIsEditing(false);
   };
 
+  const handleAddComment = () => {
+    if (newComment.trim()) {
+      const newCommentObj = {
+        id: new Date().getTime(),
+        text: newComment,
+        author: 'Anonymous',
+      };
+
+      addComment(blogPosts[blogPosts.length - 1].id, newCommentObj);
+      setNewComment('');
+    }
+  };
+
   return (
     <div>
-    <h2>New Post</h2>
-    <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
-    <textarea value={text} onChange={(e) => setText(e.target.value)} placeholder="Text" />
-    <button onClick={handleSave}>Save</button>
-  </div>
+      <h2>New Post</h2>
+      <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
+      <textarea value={text} onChange={(e) => setText(e.target.value)} placeholder="Text" />
+      <button onClick={handleSave}>Save</button>
+      <h2>Add Comment</h2>
+      <input value={newComment} onChange={(e) => setNewComment(e.target.value)} placeholder="Comment" />
+      <button onClick={handleAddComment}>Add Comment</button>
+      {isEditing && (
+        <>
+          <button onClick={handleSave}>Save</button>
+          <button onClick={handleCancel}>Cancel</button>
+        </>
+      )}
+    </div>
   );
 };
 

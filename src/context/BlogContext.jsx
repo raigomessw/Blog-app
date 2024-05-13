@@ -2,36 +2,26 @@ import React, { createContext, useState } from 'react';
 
 export const BlogContext = createContext();
 
-export const BlogProvider = (props) => {
-  const [blogPosts, setBlogPosts] = useState([
-    {
-      id: 123,
-      title: 'My First Blog Post',
-      text: 'This is my first blog post.',
-      author: 'John Doe',
-      comments: [
-        {
-          id: 1,
-          text: 'Great post!',
-          author: 'Jane Doe',
-        },
-      ],
-    },
-  ]);
+export const BlogProvider = ({ children }) => {
+  const [blogPosts, setBlogPosts] = useState([]);
+  console.log('BlogProvider component rendered');
+
+  const addPost = (newPost) => {
+    setBlogPosts((prevPosts) => [...prevPosts, newPost]);
+  };
 
   const addComment = (postId, newComment) => {
     setBlogPosts((prevPosts) =>
       prevPosts.map((post) =>
-        post.id === postId
-          ? { ...post, comments: [...post.comments, newComment] }
-          : post
+        post.id === postId ? { ...post, comments: [...post.comments, newComment] } : post
       )
     );
   };
 
   return (
-    <BlogContext.Provider value={{ blogPost: blogPosts, addComment }}>
-      {props.children}
-    </BlogContext.Provider>
+    <BlogContext.Provider value={{ blogPosts, addPost, addComment }}>
+    {console.log('BlogProvider component rendered with blogPosts:', blogPosts)}
+    {children}
+  </BlogContext.Provider>
   );
 };
