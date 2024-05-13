@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { BlogContext } from '../context/BlogContext';
 
 const BlogPost = (props) => {
-  const { post, addComment } = useContext(BlogContext);
+  const { blogPosts, addComment } = useContext(BlogContext);
 
   const [newComment, setNewComment] = useState('');
   const [currentPost, setCurrentPost] = useState(props.post);
@@ -10,7 +10,17 @@ const BlogPost = (props) => {
   useEffect(() => {
     setCurrentPost(props.post);
   }, [props.post]);
-  console.log("Current:",currentPost);
+
+  const savePostsToLocalStorage = () => {
+    localStorage.setItem('blogPosts', JSON.stringify(blogPosts));
+  };
+
+  React.useEffect(() => {
+    window.addEventListener('beforeunload', savePostsToLocalStorage);
+    return () => {
+      window.removeEventListener('beforeunload', savePostsToLocalStorage);
+    };
+  }, [blogPosts]);
 
   const handleAddComment = () => {
     if (newComment.trim()) {

@@ -53,9 +53,6 @@ const BlogAddPost = ({ addComment }) => {
       <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
       <textarea value={text} onChange={(e) => setText(e.target.value)} placeholder="Text" />
       <button onClick={handleSave}>Save</button>
-      <h2>Add Comment</h2>
-      <input value={newComment} onChange={(e) => setNewComment(e.target.value)} placeholder="Comment" />
-      <button onClick={handleAddComment}>Add Comment</button>
       {isEditing && (
         <>
           <button onClick={handleSave}>Save</button>
