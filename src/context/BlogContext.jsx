@@ -19,6 +19,15 @@ export const BlogProvider = ({ children }) => {
     );
   };
 
+  // Function to edit a post
+  const editPost = (postId, updatedPost) => {
+    setBlogPosts((prevPosts) =>
+      prevPosts.map((post) =>
+        post.id === postId ? { ...post, ...updatedPost } : post
+      )
+    );
+  };
+
   // Function to add a comment to an existing post
   const addComment = (postId, newComment) => {
     setBlogPosts((prevPosts) =>
@@ -50,7 +59,7 @@ export const BlogProvider = ({ children }) => {
   }, [blogPosts]);
 
   return (
-    <BlogContext.Provider value={{ blogPosts, addPost, deletePost, addComment }}>
+    <BlogContext.Provider value={{ blogPosts, addPost, deletePost, addComment, editPost }}>
       {console.log('BlogProvider component rendered with blogPosts:', blogPosts)}
       {children}
     </BlogContext.Provider>

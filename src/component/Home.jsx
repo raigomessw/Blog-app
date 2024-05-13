@@ -3,7 +3,7 @@ import { BlogContext } from '../context/BlogContext';
 import BlogPost from './BlogPost';
 
 const Home = () => {
- const { blogPosts, deletePost } = useContext(BlogContext);
+ const { blogPosts, deletePost, editPost } = useContext(BlogContext);
 
  if (!blogPosts) {
   return <div>Loading...</div>;
@@ -16,7 +16,7 @@ if (Array.isArray(blogPosts) && blogPosts.length === 0) {
   return (
     <div>
       {blogPosts.map((post) => (
-        <BlogPost key={post.id} post={post} onDelete={deletePost} />
+        <BlogPost key={post.id} post={post} onDelete={deletePost} onEdit={editPost} />
       ))}
     </div>
   );
