@@ -1,23 +1,19 @@
-import React from 'react';
-import { useContext } from 'react';
-import { UserContext } from '../context/UserContext';
+import React, { useContext } from 'react';
+import { BlogContext } from '../context/BlogContext';
 import BlogPost from './BlogPost';
+import CommentForm from './CommentForm';
 
-const HomePage = () => {
-  const { blogPosts } = useContext(UserContext);
+const Home = () => {
+  const { blogPost, addComment } = useContext(BlogContext);
 
   return (
-    <div className="grid grid-cols-1 mx-4 my-2 lg:mx-14 lg:my-6 gap-4">
+    <div className="grid grid-cols-1 mx-4 my-2 lg:mx-14 lg:my-6 gap-4 bg-slate-600">
       <h1>Blog Posts</h1>
-      <ul>
-        {blogPosts.map((post) => (
-          <li key={post.id}>
-            <BlogPost post={post} />
-          </li>
-        ))}
-      </ul>
+      {blogPost && blogPost.map((post) => (
+        <BlogPost key={post.id} post={post} addComment={addComment} />
+      ))}
     </div>
   );
 };
 
-export default HomePage;
+export default Home;

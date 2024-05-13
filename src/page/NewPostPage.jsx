@@ -1,10 +1,11 @@
-import NewPost from "../component/NewPost"
+
+import BlogAddPost from '../component/BlogAddPost';
 
 
 const NewPostPage = () => {
  return ( 
     <div>
-       <NewPost />
+       <BlogAddPost/>
     </div>
   );
 }

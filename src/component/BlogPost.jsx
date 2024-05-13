@@ -1,59 +1,27 @@
-// blog-post.js
-import React, { useState } from 'react';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
+import CommentForm from './CommentForm';
+import Comment from './Comment';
 import { UserContext } from '../context/UserContext';
 
-const BlogPost = ({ post }) => {
-  const { userName, blogPosts, setBlogPosts } = useContext(UserContext);
-  const [isEditing, setIsEditing] = useState(false);
-  const [title, setTitle] = useState(post.title);
-  const [text, setText] = useState(post.text);
+const BlogPost = ({ post, addComment }) => {
+  const { userName, isLoggedIn } = useContext(UserContext);
 
-  const handleEdit = () => {
-    setIsEditing(true);
-  };
-
-  const handleSave = () => {
-    const updatedPost = { ...post, title, text };
-    setBlogPosts((prevPosts) =>
-      prevPosts.map((p) => (p.id === post.id ? updatedPost : p))
-    );
-    setIsEditing(false);
-  };
-
-  const handleCancel = () => {
-    setIsEditing(false);
-  };
-
-  const handleDelete = () => {
-    setBlogPosts((prevPosts) => prevPosts.filter((p) => p.id !== post.id));
+  const handleAddComment = (newComment) => {
+    addComment(post.id, newComment);
   };
 
   return (
-    <div>
-<h2>{isEditing ? <input value={title} onChange={setTitle} /> : post.title}</h2>
-      <p>Author: {post.author}</p>
-      {isEditing ? (
-        <textarea value={text} onChange={(e) => setText(e.target.value)} />
-      ) : (
-        <p>{post.text}</p>
+    <div className=" shadow-md p-4 rounded">
+      <h2 className="text-2xl font-bold mb-2">{post.title}</h2>
+      <p className="text-gray-700 mb-4">{post.text}</p>
+      <p className="text-gray-600 mb-2">Author: {post.author}</p>
+      {isLoggedIn && (
+        <CommentForm onAddComment={handleAddComment} />
       )}
-      {post.comments.map((comment) => (
+      <h3 className="text-xl font-bold mb-2 mt-6">Comments</h3>
+      {post.comments && post.comments.map((comment) => (
         <Comment key={comment.id} comment={comment} />
       ))}
-      {userName === post.author && (
-        <div>
-          {isEditing ? (
-            <div>
-              <button onClick={handleSave}>Save</button>
-              <button onClick={handleCancel}>Cancel</button>
-            </div>
-          ) : (
-            <button onClick={handleEdit}>Edit</button>
-          )}
-          <button onClick={handleDelete}>Delete</button>
-        </div>
-      )}
     </div>
   );
 };

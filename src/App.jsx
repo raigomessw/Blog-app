@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "./context/UserContext";
 import PageLayout from "./component/PageLayout";
-import { ProductProvider } from "./context/ProductContext";
+import { BlogProvider } from "./context/BlogContext";
 import HomePage from './component/Home';
 import NewPostPage from './page/NewPostPage';
 
@@ -11,14 +11,14 @@ const App = () => {
   const { isLoggedIn } = useContext(UserContext);
 
   return (
-    <ProductProvider>
+    <BlogProvider>
       <BrowserRouter>
         <NavBar />
         {isLoggedIn ? (
           <>
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/about" element={<NewPostPage />} />
+              <Route path="/new-post-page" element={<NewPostPage />} />
               
             </Routes>
           </>
@@ -26,7 +26,7 @@ const App = () => {
           <PageLayout>Please log in</PageLayout>
         )}
       </BrowserRouter>
-    </ProductProvider>
+    </BlogProvider>
   );
 };
 

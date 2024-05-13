@@ -16,29 +16,11 @@ export const UserProvider = (props) => {
     setIsLoggedIn(false);
     localStorage.removeItem("isLoggedIn");
   };
-  const [blogPosts, setBlogPosts] = useState([
-    {
-      id: 1,
-      title: 'Post 1',
-      author: 'Jane Doe',
-      text: 'This is post 1',
-      comments: [],
-    },
-    {
-      id: 2,
-      title: 'Post 2',
-      author: 'Jane Doe',
-      text: 'This is post 2',
-      comments: [],
-    },
-  ]);
 
   const useInApp = {
     userName,
     setUserName,
     isLoggedIn,
-    blogPosts,
-    setBlogPosts,
     login,
     logout,
   };

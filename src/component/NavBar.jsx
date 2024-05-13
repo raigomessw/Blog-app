@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
-import NewPostPage from '../page/NewPostPage';
+
 
 const Header = () => {
   const { userName, isLoggedIn, login, logout } = useContext(UserContext);
