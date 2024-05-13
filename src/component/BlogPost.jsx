@@ -1,37 +1,53 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { BlogContext } from '../context/BlogContext';
+import { UserContext } from '../context/UserContext';
 
-const BlogPost = (props) => {
+const BlogPost = ({ post, onDelete }) => { // Certifique-se de que onDelete está sendo recebido como uma propriedade
   const { blogPosts, addComment } = useContext(BlogContext);
+  const { userName } = useContext(UserContext);
 
   const [newComment, setNewComment] = useState('');
-  const [currentPost, setCurrentPost] = useState(props.post);
+  const [currentPost, setCurrentPost] = useState(post);
 
   useEffect(() => {
-    setCurrentPost(props.post);
-  }, [props.post]);
-
-  const savePostsToLocalStorage = () => {
-    localStorage.setItem('blogPosts', JSON.stringify(blogPosts));
-  };
-
-  React.useEffect(() => {
-    window.addEventListener('beforeunload', savePostsToLocalStorage);
-    return () => {
-      window.removeEventListener('beforeunload', savePostsToLocalStorage);
-    };
-  }, [blogPosts]);
+    setCurrentPost(post);
+  }, [post]);
 
   const handleAddComment = () => {
-    if (newComment.trim()) {
-      const newCommentObj = {
-        id: new Date().getTime(),
-        text: newComment,
-        author: 'Anonymous',
-      };
+    if (!currentPost) {
+      console.error('BlogPost.handleAddComment: currentPost is null');
+      return;
+    }
 
-      addComment(currentPost.id, newCommentObj);
-      setNewComment('');
+    if (!addComment) {
+      console.error('BlogPost.handleAddComment: addComment is null');
+      return;
+    }
+
+    if (newComment.trim() === '') {
+      console.error('BlogPost.handleAddComment: newComment is empty');
+      return;
+    }
+    
+    const newCommentObj = {
+      id: new Date().getTime(),
+      text: newComment,
+      author: userName,
+    };
+
+    addComment(currentPost.id, newCommentObj);
+    setNewComment('');
+  };
+
+  const handleEdit = () => {
+    // Lógica para edição do post
+  };
+
+  const handleDeletePost = () => {
+    if (currentPost.author === userName) {
+      onDelete(currentPost.id); 
+    } else {
+      console.log("Você não tem permissão para excluir este post.");
     }
   };
 
@@ -57,6 +73,12 @@ const BlogPost = (props) => {
         placeholder="Add a comment"
       />
       <button onClick={handleAddComment}>Add Comment</button>
+      {currentPost.author === userName && (
+        <>
+          <button onClick={handleEdit}>Edit</button>
+          <button onClick={handleDeletePost}>Delete</button>
+        </>
+      )}
     </div>
   );
 };

@@ -12,6 +12,13 @@ export const BlogProvider = ({ children }) => {
     setBlogPosts((prevPosts) => [...prevPosts, newPost]);
   };
 
+  // Function to delete a post
+  const deletePost = (postId) => {
+    setBlogPosts((prevPosts) =>
+      prevPosts.filter((post) => post.id !== postId)
+    );
+  };
+
   // Function to add a comment to an existing post
   const addComment = (postId, newComment) => {
     setBlogPosts((prevPosts) =>
@@ -27,7 +34,7 @@ export const BlogProvider = ({ children }) => {
   };
 
   // Load blog posts from localStorage on component mount
-  React.useEffect(() => {
+  useEffect(() => {
     const storedPosts = localStorage.getItem('blogPosts');
     if (storedPosts) {
       setBlogPosts(JSON.parse(storedPosts));
@@ -35,7 +42,7 @@ export const BlogProvider = ({ children }) => {
   }, []);
 
   // Save blog posts to localStorage before page unload
-  React.useEffect(() => {
+  useEffect(() => {
     window.addEventListener('beforeunload', savePostsToLocalStorage);
     return () => {
       window.removeEventListener('beforeunload', savePostsToLocalStorage);
@@ -43,7 +50,7 @@ export const BlogProvider = ({ children }) => {
   }, [blogPosts]);
 
   return (
-    <BlogContext.Provider value={{ blogPosts, addPost, addComment }}>
+    <BlogContext.Provider value={{ blogPosts, addPost, deletePost, addComment }}>
       {console.log('BlogProvider component rendered with blogPosts:', blogPosts)}
       {children}
     </BlogContext.Provider>
