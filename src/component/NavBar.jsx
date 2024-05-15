@@ -7,15 +7,10 @@ import { signOutUser } from "../firebase/authFunctions";
 
 const Header = () => {
   const { currentUser, userLoggedIn } = useContext(AuthContext)
-  const handleClearLocalStorage = () => {
-    localStorage.clear();
-    console.log('LocalStorage has been cleared');
-  };
   return (
     <div className="grid grid-cols-2 mt-6 mx-10 items-center">
       <h1 className="font-bold">Blog App</h1>
       <nav className="flex justify-end">
-      <button onClick={handleClearLocalStorage}>Clear LocalStorage</button>
         {userLoggedIn ? (
           <>
             <Link to="/" className="mr-4">
