@@ -1,32 +1,36 @@
 import { Link } from "react-router-dom";
 import { useContext } from "react";
-import { UserContext } from "../context/UserContext";
+import { AuthContext } from "../context/AuthContext";
+import { signOutUser } from "../firebase/authFunctions";
+
 
 
 const Header = () => {
-  const { userName, isLoggedIn, login, logout } = useContext(UserContext);
-
+  const { currentUser, userLoggedIn } = useContext(AuthContext)
+  const handleClearLocalStorage = () => {
+    localStorage.clear();
+    console.log('LocalStorage has been cleared');
+  };
   return (
     <div className="grid grid-cols-2 mt-6 mx-10 items-center">
       <h1 className="font-bold">Blog App</h1>
-
       <nav className="flex justify-end">
-        <Link to="/" className="mr-4">
-          Home
-        </Link>
-        <Link className="mr-4" to="/new-post-page">
-          NewPostPage
-        </Link>
-
-        {isLoggedIn ? (
+      <button onClick={handleClearLocalStorage}>Clear LocalStorage</button>
+        {userLoggedIn ? (
           <>
-            <p className="mx-5 font-bold">{userName}</p>
-            <button onClick={logout}>Log out</button>
+            <Link to="/" className="mr-4">
+              Home
+            </Link>
+            <Link className="mr-4" to="/new-post-page">
+          NewPostPage
+           </Link>
+            <p className="mx-5 font-bold">{currentUser.email}</p>
+            <button onClick={signOutUser}>Log out</button>
           </>
         ) : (
-          <button className="ml-5" onClick={login}>
+          <Link to="/login" className="ml-5">
             Log in
-          </button>
+          </Link>
         )}
       </nav>
     </div>

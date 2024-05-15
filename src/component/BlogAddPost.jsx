@@ -1,57 +1,55 @@
-import React, { useState } from 'react';
-import { useContext } from 'react';
-import { UserContext } from '../context/UserContext';
+import React, { useState, useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
 import { BlogContext } from '../context/BlogContext';
 
 const BlogAddPost = ({ addComment }) => {
-  const { userName } = useContext(UserContext);
-  const { blogPosts, addPost } = useContext(BlogContext);
+  const { currentUser } = useContext(AuthContext); 
+  const { addPost } = useContext(BlogContext);
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
-  const [newComment, setNewComment] = useState('');
 
-  const handleEdit = () => {
-    setIsEditing(true);
-  };
 
   const handleSave = () => {
+    if (!title.trim() || !text.trim()) {
+      console.log("Title and text cannot be empty");
+      return;
+    }
+
     const newPost = {
       id: new Date().getTime(),
       title,
       text,
-      author: userName,
+      author: currentUser.email, // Usar o email do usuário autenticado
+      authorId: currentUser.uid, // Usar o uid do usuário autenticado
       comments: [],
     };
 
-    console.log(newPost);
-
     addPost(newPost);
+    setTitle('');
+    setText('');
     setIsEditing(false);
   };
 
   const handleCancel = () => {
     setIsEditing(false);
-  };
-
-  const handleAddComment = () => {
-    if (newComment.trim()) {
-      const newCommentObj = {
-        id: new Date().getTime(),
-        text: newComment,
-        author: 'Anonymous',
-      };
-
-      addComment(blogPosts[blogPosts.length - 1].id, newCommentObj);
-      setNewComment('');
-    }
+    setTitle('');
+    setText('');
   };
 
   return (
     <div>
       <h2>New Post</h2>
-      <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
-      <textarea value={text} onChange={(e) => setText(e.target.value)} placeholder="Text" />
+      <input 
+        value={title} 
+        onChange={(e) => setTitle(e.target.value)} 
+        placeholder="Title" 
+      />
+      <textarea 
+        value={text} 
+        onChange={(e) => setText(e.target.value)} 
+        placeholder="Text" 
+      />
       <button onClick={handleSave}>Save</button>
       {isEditing && (
         <>
