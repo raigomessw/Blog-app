@@ -5,6 +5,7 @@ export const BlogContext = createContext();
 
 export const BlogProvider = ({ children }) => {
   const [blogPosts, setBlogPosts] = useState([]);
+  const [categories, setCategories] = useState(["General","IT", "UX/UI" ]);
 
   const addPost = (newPost) => {
     setBlogPosts((prevPosts) => [...prevPosts, newPost]);
@@ -32,8 +33,17 @@ export const BlogProvider = ({ children }) => {
     );
   };
 
+  const addCategory = (newCategory) => {
+    if (!categories.includes(newCategory)) {
+      setCategories((prevCategories) => [...prevCategories, newCategory]);
+    }
+  };
+  const removeCategory = (category) => { 
+    setCategories((prevCategories) => prevCategories.filter((c) => c !== category));
+  }
   const savePostsToLocalStorage = () => {
     localStorage.setItem('blogPosts', JSON.stringify(blogPosts));
+    localStorage.setItem('categories', JSON.stringify(categories));
   };
 
   useEffect(() => {
@@ -51,7 +61,7 @@ export const BlogProvider = ({ children }) => {
   }, [blogPosts]);
 
   return (
-    <BlogContext.Provider value={{ blogPosts, addPost, deletePost, addComment, editPost }}>
+    <BlogContext.Provider value={{ blogPosts, addPost, deletePost, addComment, editPost, categories, addCategory }}>
       {children}
     </BlogContext.Provider>
   );
