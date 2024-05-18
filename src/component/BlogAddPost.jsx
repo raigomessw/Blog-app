@@ -60,33 +60,57 @@ const BlogAddPost = ({ addComment }) => {
   };
 
   return (
-    <div>
-      <h2>New Post</h2>
-      <input 
-        value={title} 
-        onChange={(e) => setTitle(e.target.value)} 
-        placeholder="Title" 
-      />
-      <textarea 
-        value={text} 
-        onChange={(e) => setText(e.target.value)} 
-        placeholder="Text" 
-      />
-      <select value={category} onChange={(e) => setCategory(e.target.value)}>
-        <option value="">Select Category</option>
-        {categories.map((cat, index) => (
-          <option key={index} value={cat}>{cat}</option>
-        ))}
-      </select>
-      <button onClick={handleSave}>Save</button>
-      {isEditing && (
-        <>
-          <button onClick={handleAddCategory}>Add Category</button>
-          <button onClick={handleSave}>Save</button>
-          <button onClick={handleCancel}>Cancel</button>
-        </>
-      )}
-    </div>
+    <div className="max-w-md mx-auto p-4 rounded shadow-lg bg-gray-500">
+  <h2 className="text-xl font-bold mb-4">New Post</h2>
+  <input 
+    className="w-full border bg-gray-700 border-gray-300 rounded px-3 py-2 mb-3 focus:outline-none focus:border-blue-500"
+    value={title} 
+    onChange={(e) => setTitle(e.target.value)} 
+    placeholder="Title" 
+  />
+  <textarea 
+    className="w-full border bg-gray-700 border-gray-300 rounded px-3 py-2 mb-3 focus:outline-none focus:border-blue-500"
+    value={text} 
+    onChange={(e) => setText(e.target.value)} 
+    placeholder="Text" 
+    rows="4"
+  />
+  <select 
+    className="w-full border bg-gray-700 border-gray-300 rounded px-3 py-2 mb-3 focus:outline-none focus:border-blue-500"
+    value={category} 
+    onChange={(e) => setCategory(e.target.value)}
+  >
+    <option value="">Select Category</option>
+    {categories.map((cat, index) => (
+      <option key={index} value={cat}>{cat}</option>
+    ))}
+  </select>
+  <div className="flex justify-end space-x-2">
+    <button 
+      className="px-4 py-2 bg-blue-800 text-white rounded hover:bg-black focus:outline-none focus:bg-blue-600 w-full"
+      onClick={handleSave}
+    >
+      Save
+    </button>
+    {isEditing && (
+      <>
+        <button 
+          className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 focus:outline-none focus:bg-gray-400"
+          onClick={handleAddCategory}
+        >
+          Add Category
+        </button>
+        <button 
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+          onClick={handleCancel}
+        >
+          Cancel
+        </button>
+      </>
+    )}
+  </div>
+</div>
+
   );
 };
 

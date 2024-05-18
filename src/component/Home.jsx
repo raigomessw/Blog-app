@@ -24,19 +24,23 @@ if (Array.isArray(blogPosts) && blogPosts.length === 0) {
 }
 
   return (
-   <div>
-   <select value={selectedCategory} onChange={handleCategoryChange}>
-     <option value="">All Categories</option>
-     {categories.map((category, index) => (
-       <option key={index} value={category}>{category}</option>
-     ))}
-   </select>
-   <div>
-     {filteredPosts.map((post) => (
-       <BlogPost key={post.id} post={post} onDelete={deletePost} onEdit={editPost} />
-     ))}
-   </div>
- </div>
+   <div className="  w-11/12 mx-auto p-4 bg-gray-800 rounded shadow-xl shadow-slate-900 space-y-4">
+  <select
+    className="w-full border bg-gray-700 border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+    value={selectedCategory}
+    onChange={handleCategoryChange}
+  >
+    <option value="">All Categories</option>
+    {categories.map((category, index) => (
+      <option key={index} value={category}>{category}</option>
+    ))}
+  </select>
+  <div className='space-y-5'>
+    {filteredPosts.map((post) => (
+      <BlogPost key={post.id} post={post} onDelete={deletePost} onEdit={editPost} />
+    ))}
+  </div>
+</div>
   );
 };
 
