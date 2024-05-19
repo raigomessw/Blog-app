@@ -24,6 +24,28 @@ export const BlogProvider = ({ children }) => {
       )
     );
   };
+  const deleteComment = (postId, commentId) => {
+    setBlogPosts((prevPosts) =>
+      prevPosts.map((post) =>
+      post.id === postId 
+        ? { ...post, comments: post.comments.filter(comment => comment.id !== commentId) } 
+        : post
+    ));
+  };
+
+  const editComment = (postId, commentId, updatedText) => {
+    setBlogPosts((prevPosts) =>
+      prevPosts.map((post) =>
+      post.id === postId 
+        ? {
+          ...post,
+          comments: post.comments.map(comment =>
+            comment.id === commentId ? { ...comment, text: updatedText } : comment
+          )
+        }
+        : post
+    ));
+  };
 
   const editPost = (postId, updatedPost) => {
     setBlogPosts((prevPosts) =>
@@ -61,7 +83,7 @@ export const BlogProvider = ({ children }) => {
   }, [blogPosts]);
 
   return (
-    <BlogContext.Provider value={{ blogPosts, addPost, deletePost, addComment, editPost, categories, addCategory }}>
+    <BlogContext.Provider value={{ blogPosts, addPost, deletePost, addComment, deleteComment, editComment, editPost, categories, addCategory }}>
       {children}
     </BlogContext.Provider>
   );
