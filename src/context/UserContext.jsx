@@ -3,7 +3,7 @@ import { createContext, useState } from 'react';
 export const UserContext = createContext();
 
 export const UserProvider = (props) => {
-  const [userName, setUserName] = useState("Rai Gomes");
+  const [userName, setUserName] = useState("Jane Doe");
   const lsIsLoggedIn = localStorage.getItem("isLoggedIn");
   const [isLoggedIn, setIsLoggedIn] = useState(lsIsLoggedIn);
 
